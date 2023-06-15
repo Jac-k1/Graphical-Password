@@ -18,7 +18,7 @@ export default function RootLayout({
       <body className={inter.className}>
 
         <nav>
-          <h1>hello</h1>
+          <h1>welcome to whateverteamnameis</h1>
         </nav>
         {children}
       </body>
