@@ -6,7 +6,7 @@ export default function Login() {
             <div className='main'>
                 <h1>Welcome to the Login page</h1>
 
-                <form>
+                <form action='/app/Home' method='post'>
                     <p>Username</p>
                     <input type='text'></input>
                     <br></br>
@@ -14,10 +14,9 @@ export default function Login() {
                     <input type='password'></input>
                     <br></br>
                     <br></br>
-                    <input type='button' value='submit'></input>
+                    <input type='submit' value='submit'></input>
                 </form>
             </div>
         </body>
-
     );
 }
