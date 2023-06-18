@@ -1,21 +1,34 @@
-<html>
-    <head>
-        <link rel='stylesheet' href='login.css'></link>
-    </head>
-    <body>
-        <div class='main'>
-            <h1>Welcome to the Login page</h1>
+<?php
+session_start();
 
-            <form action='login.php' method='post'>
-                <p>Username</p>
-                <input type='text' name="username"></input>
-                <br></br>
-                <p>Password</p>
-                <input type='password' name="password"></input>
-                <br></br>
-                <br></br>
-                <input type='submit' value='Login'></input>
-            </form>
-        </div>
-    </body>
-</html>
+
+//$name = $_POST['username'];
+//$password = $_POST['password'];
+
+/*
+$host = "localhost";
+$user = "root";
+$pass = "";
+$dbname = "test_database";
+
+$conn = new mysqli($host, $user, $pass, $dbname);
+
+if($conn->connect_error){
+    die("Connection failed: " . $conn->connect_error);
+}
+else {
+    echo "Connected successfully\n";
+    }
+
+$conn->close();
+*/
+
+
+$conn = mysqli_connect("localhost", "root", "", "test_database");
+if(!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+else {
+    echo "Connected successfully\n";
+    }
+?>
