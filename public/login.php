@@ -7,9 +7,9 @@ session_start();
 
 /*
 $host = "localhost";
-$user = "root";
-$pass = "";
-$dbname = "test_database";
+$user = "jpham24";
+$pass = "jpham24";
+$dbname = "jpham24";
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 
@@ -23,12 +23,16 @@ else {
 $conn->close();
 */
 
+var_dump(function_exists('mysqli_connect'));
 
-$conn = mysqli_connect("localhost", "root", "", "test_database");
+
+$conn = mysqli_connect("localhost", "jpham24", "jpham24", "jpham24");
 if(!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 else {
     echo "Connected successfully\n";
     }
+
+    phpinfo();
 ?>
