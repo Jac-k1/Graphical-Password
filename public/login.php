@@ -5,7 +5,7 @@ session_start();
 //$name = $_POST['username'];
 //$password = $_POST['password'];
 
-
+/*
 $host = "localhost";
 $user = "jpham24";
 $pass = "jpham24";
@@ -21,7 +21,19 @@ else {
     }
 
 $conn->close();
+*/
 
+$conn = new mysqli("localhost", "root", "password", "test");
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+else {
+    echo "Connected successfully\n";
+    }
+
+
+$conn->close();
 
 /*
 var_dump(function_exists('mysqli_connect'));
