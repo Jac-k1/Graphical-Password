@@ -20,12 +20,8 @@ $conn = new mysqli($host, $user, $pass, $dbname);
         echo "Connected successfully";
         }
 
-/*
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST['username'];
-    $password = $_POST['password'];
 
-    $sql = "SELECT * FROM users where username = $name";
+    $sql = "SELECT * FROM users where username == $name";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $name);
     $stmt->execute();
@@ -34,7 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Username already exists";
         exit;
     }
-*/
+
+
     $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
     if(!$stmt) {
