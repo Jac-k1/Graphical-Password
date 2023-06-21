@@ -2,49 +2,36 @@
 session_start();
 
 
-//$name = $_POST['username'];
-//$password = $_POST['password'];
+$name = $_POST['username'];
+$password = $_POST['password'];
 
-/*
-$host = "localhost";
-$user = "jpham24";
-$pass = "jpham24";
-$dbname = "jpham24";
-
-$conn = new mysqli($host, $user, $pass, $dbname);
-
-if($conn->connect_error){
-    die("Connection failed: " . $conn->connect_error);
-}
-else {
-    echo "Connected successfully\n";
-    }
-
-$conn->close();
-*/
 
 $conn = new mysqli("localhost", "root", "password", "test");
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-else {
-    echo "Connected successfully\n";
-    }
 
 
-$conn->close();
 
-/*
-var_dump(function_exists('mysqli_connect'));
+$sql = "SELECT * FROM users where username = ? AND password = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $name, $password);
+$stmt->execute();
+$result = $stmt->get_result();
 
-
-$conn = mysqli_connect("localhost", "jpham24", "jpham24", "jpham24");
-if(!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+if ($result->num_rows === 1) {
+    $_SESSION['username'] = $name;
+    $_SESSION['password'] = $password;
+    $_SESSION['logged_in'] = true; 
+    header("Location: home.html");
 }
 else {
-    echo "Connected successfully\n";
-    }
-*/
+    echo "Invalid username or password";
+    exit;
+}
+
+$stmt->close();
+$conn->close();
+
 ?>

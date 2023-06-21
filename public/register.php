@@ -16,12 +16,9 @@ $conn = new mysqli($host, $user, $pass, $dbname);
     if($conn->connect_error){
         die("Connection failed: " . $conn->connect_error);
     }
-    else {
-        echo "Connected successfully";
-        }
 
 
-    $sql = "SELECT * FROM users where username == $name";
+    $sql = "SELECT * FROM users where username = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $name);
     $stmt->execute();
@@ -31,6 +28,7 @@ $conn = new mysqli($host, $user, $pass, $dbname);
         exit;
     }
 
+    //$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
@@ -46,9 +44,8 @@ $conn = new mysqli($host, $user, $pass, $dbname);
     else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
-    $stmt->close();
-
-
-
- $conn->close();
+    
+    
+$stmt->close();
+$conn->close();
 ?>
