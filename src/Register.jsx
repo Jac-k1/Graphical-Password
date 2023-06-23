@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-//import axios from 'axios';
+import axios from 'axios';
+
 
 export const Register = (props) => {
     const [username, setUser] = useState('');
@@ -7,11 +8,13 @@ export const Register = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        /*
-        if(username === "" && password === ""){
-            axios.post()
-        }
-        */
+        axios.post('http://localhost:3000/api/register', { username, password })
+            .then(res => {
+                console.log(res);
+                setUser('');
+                setPass('');
+            })
+
     }
 
     return (
@@ -21,11 +24,11 @@ export const Register = (props) => {
             </div>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="username">Username: </label>
-                <input value={username} OnChange={(e) => setUser(e.target.value)} type="username" placeholder="username" id="username" name="username"></input>
+                <input DeafultValue={username} OnChange={(e) => setUser(e.target.value)} type="username" placeholder="username" id="username" name="username"></input>
                 <br></br>
                 <br></br>
                 <label htmlFor="password">Password: </label>
-                <input value={password} OnChange={(e) => setPass(e.target.value)} type="password" placeholder="******" id="password" name="password"></input>
+                <input DefaultValue={password} OnChange={(e) => setPass(e.target.value)} type="password" placeholder="******" id="password" name="password"></input>
                 <br></br>
                 <br></br>
                 <button type="submit">Register</button>
