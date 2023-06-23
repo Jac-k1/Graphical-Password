@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+//import axios from 'axios';
 
 export const Register = (props) => {
     const [username, setUser] = useState('');
@@ -6,7 +7,11 @@ export const Register = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(username, password);
+        /*
+        if(username === "" && password === ""){
+            axios.post()
+        }
+        */
     }
 
     return (
