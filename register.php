@@ -45,7 +45,7 @@ $conn = new mysqli($host, $user, $pass, $dbname);
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
     
-    
+
 $stmt->close();
 $conn->close();
 ?>
