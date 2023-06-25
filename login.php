@@ -1,37 +1,22 @@
-<?php
-session_start();
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel='stylesheet' href='login.css'></link>
+    </head>
+    <body>
+        <div class='main'>
+            <h1>Welcome to the Login page</h1>
 
-
-$name = $_POST['username'];
-$password = $_POST['password'];
-
-
-$conn = new mysqli("localhost", "root", "password", "test");
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-
-
-$sql = "SELECT * FROM users where username = ? AND password = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("ss", $name, $password);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows === 1) {
-    $_SESSION['username'] = $name;
-    $_SESSION['password'] = $password;
-    $_SESSION['logged_in'] = true; 
-    header("Location: home.html");
-}
-else {
-    echo "Invalid username or password";
-    exit;
-}
-
-$stmt->close();
-$conn->close();
-
-?>
+            <form action='./login-submit.php' method='post'>
+                <p>Username</p>
+                <input type='text' name="username"></input>
+                <br></br>
+                <p>Password</p>
+                <input type='password' name="password"></input>
+                <br></br>
+                <br></br>
+                <input type='submit' value='Login'></input>
+            </form>
+        </div>
+    </body>
+</html>
