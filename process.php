@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Example: Store the selected Pokémon in a database
         $host = 'localhost';
         $database = 'test';
-        $username = 'user';
+        $username = 'root';
         $password = 'password';
 
         // Connect to the database
