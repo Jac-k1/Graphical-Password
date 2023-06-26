@@ -9,7 +9,7 @@
     <div class='main'>
         <h1>Welcome to the Register page</h1>
 
-        <form action="./register-submit.php" method="post">
+        <form action="./process.php" method="post">
             <p>Username</p>
             <input type='text' name="username"></input>
             <br></br>

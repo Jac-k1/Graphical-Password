@@ -18,9 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Example: Store the selected Pokémon in a database
         $host = 'localhost';
-        $database = 'test';
-        $username = 'root';
-        $password = 'password';
+        $database = 'jpham24';
+        $username = 'jpham24';
+        $password = 'jpham24';
 
         // Connect to the database
         $connection = mysqli_connect($host, $username, $password, $database);
