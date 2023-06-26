@@ -26,11 +26,12 @@ foreach ($pokemonList as $pokemon) {
 // Display the Pokémon sprites in boxes
 echo '<form method="post" action="process.php">';
 foreach ($pokemonDetails as $pokemon) {
+    $pokemonName = $pokemon->name;
     $pokemonSprite = $pokemon->sprites->front_default;
 
     echo '<label>';
     echo '<input type="checkbox" name="selected_pokemon[]" value="' . $pokemonSprite . '">';
-    echo '<img src="image-proxy.php?url=' . urlencode($pokemonSprite) . '" alt="Pokemon">';
+    echo '<img src="image-proxy.php?url=' . urlencode($pokemonSprite) . '" alt="' . $pokemonName . '">';
     echo '</label>';
 }
 echo '<br><br>';
