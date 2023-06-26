@@ -18,7 +18,7 @@ $conn = new mysqli($host, $user, $pass, $dbname);
     }
 
 
-    $sql = "SELECT * FROM users where username = ?";
+    $sql = "SELECT * FROM users2 where username = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $name);
     $stmt->execute();
@@ -30,12 +30,12 @@ $conn = new mysqli($host, $user, $pass, $dbname);
 
     //$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+    $sql = "INSERT INTO users2 (username, password, pokemons) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
     if(!$stmt) {
         echo "Prepare failed: (". $conn->errno.") ".$conn->error."<br>";
     }
-    $stmt->bind_param("ss", $name, $password);
+    $stmt->bind_param("sss", $name, $password, $pokemons);
     $result = $stmt->execute();
 
     if($result) {

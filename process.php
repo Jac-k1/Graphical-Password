@@ -1,10 +1,17 @@
 <?php
+
+session_start();
+
+
 // Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if selected_pokemon field is present in the form data
     if (isset($_POST['selected_pokemon'])) {
         // Retrieve the selected Pokémon from the form data
-        $selectedPokemon = $_POST['selected_pokemon'];
+        $pokemons = $_POST['selected_pokemon'];
+        $name = $_POST['username'];
+        $password = $_POST['password'];
+
 
         // Perform any validation or processing on the selected Pokémon data
         // For example, you can store them in a database, perform additional checks, etc.
@@ -24,8 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Escape and insert each selected Pokémon into the database
         foreach ($selectedPokemon as $pokemon) {
             $escapedPokemon = mysqli_real_escape_string($connection, $pokemon);
-            $query = "INSERT INTO your_table_name (pokemon_name) VALUES ('$escapedPokemon')";
+            $query = "INSERT INTO users2 (username, password, pokemons) VALUES (?, ?, ?)";
             mysqli_query($connection, $query);
+            $stmt = $conn->prepare($sql);
+            if(!$stmt) {
+                echo "Prepare failed: (". $conn->errno.") ".$conn->error."<br>";
+            }
+            $stmt->bind_param("sss", $name, $password, $pokemons);
+            $result = $stmt->execute();
         }
 
         // Close the database connection

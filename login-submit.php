@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 
 
 
-$sql = "SELECT * FROM users where username = ? AND password = ?";
+$sql = "SELECT * FROM users2 where username = ? AND password = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ss", $name, $password);
 $stmt->execute();

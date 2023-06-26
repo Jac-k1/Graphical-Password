@@ -55,12 +55,9 @@
                 echo '</label>';
             }
             echo '<br><br>';
-            echo '<input type="submit" value="Submit">';
+            echo '<input type="submit" value="Register">';
             echo '</form>';
-            ?>
-            <br>
-            <br>
-            <input type='submit' value='Register'></input>
+            ?>                                                                                        
         </form>
     </div>
 </body>
