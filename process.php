@@ -8,9 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if selected_pokemon field is present in the form data
     if (isset($_POST['selected_pokemon'])) {
         // Retrieve the selected Pokémon from the form data
-        $selected_pokemon = $_POST['selected_pokemon'];
-        $name = $_POST['username'];
-        $password = $_POST['password'];
+        $selected_pokemon = $_POST['selected_pokemon'] ?? [];
+        $name = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
 
 
         // Perform any validation or processing on the selected Pokémon data
@@ -22,6 +22,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $username = 'sbuytendorp1';
         $password = 'sbuytendorp1';
 
+        /*
+        $pdo = new PDO("mysql:host=$host;dbname=$database", $username, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $stmt = $pdo->prepare("INSERT INTO users2 (username, password, pokemons) VALUES (?, ?, ?)");
+        foreach ($selected_pokemon as $pokemon) {
+            $pokemonName = $pokemon['name'];
+            $stmt->execute([$name, $password, $pokemonName]);
+        }
+        */
+
+
+
         // Connect to the database
         $connection = new mysqli($host, $username, $password, $database);
         if (!$connection) {
@@ -29,9 +42,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $stmt = $connection->prepare("INSERT INTO users2 (username, password, pokemons) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $name, $password, $pokemons);
-        $pokemons = implode(',', $selected_pokemon);
-        $stmt->execute();
+        $stmt->bind_param("sss", $name, $password, $pokemonName);
+        foreach ($selected_pokemon as $pokemon) {
+            $pokemonName = $pokemon['name'];
+            $stmt->execute();
+        }
+
+        $stmt->close();
         // Close the database connection
         mysqli_close($connection);
 
