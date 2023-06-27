@@ -27,10 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $stmt = $pdo->prepare("INSERT INTO users2 (username, password, pokemons) VALUES (?, ?, ?)");
-        foreach ($selected_pokemon as $pokemon) {
-            $pokemonName = $pokemon['name'];
-            $stmt->execute([$name, $password, $pokemonName]);
-        }
+        $pokemonName = implode("", $selected_pokemon);
+        $stmt->bind_param("sss", $name, $password, $pokemonName);
+        $stmt->execute();
         */
 
 
@@ -42,11 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $stmt = $connection->prepare("INSERT INTO users2 (username, password, pokemons) VALUES (?, ?, ?)");
+        $pokemonName = implode("", $selected_pokemon);
         $stmt->bind_param("sss", $name, $password, $pokemonName);
-        foreach ($selected_pokemon as $pokemon) {
-            $pokemonName = $pokemon['name'];
-            $stmt->execute();
-        }
+        $stmt->execute();
 
         $stmt->close();
         // Close the database connection
@@ -58,8 +55,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Handle the case where no Pokémon are selected
         echo "No Pokémon selected.";
     }
-} else {
-    // Handle the case where the form is not submitted
-    echo "Form not submitted.";
 }
 ?>
