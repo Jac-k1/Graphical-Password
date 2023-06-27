@@ -73,7 +73,7 @@
             // Display the Pokémon sprites in boxes
                 echo '<form method="post" action="process.php">';
                 echo '<label>';
-                echo '<input type="checkbox" name="selected_pokemon[]" value="' . $pokemonSprite . '">';
+                echo '<input type="checkbox" name="selected_pokemon[]" value="' . $pokemonName . '">';
                 echo '<img src="' . $pokemonSprite . '" alt="'. $pokemonName . '">';
                 echo '</label>';
             }
