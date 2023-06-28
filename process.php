@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Retrieve the selected Pokémon from the form data
         $selected_pokemon = $_POST['selected_pokemon'] ?? [];
         $name = $_POST['username'] ?? '';
-        $password = $_POST['password'] ?? '';
+        $passworduploaded = $_POST['password'] ?? '';
 
 
         // Perform any validation or processing on the selected Pokémon data
@@ -18,9 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Example: Store the selected Pokémon in a database
         $host = 'localhost';
-        $database = 'sbuytendorp1';
-        $username = 'sbuytendorp1';
-        $password = 'sbuytendorp1';
+        $database = 'test';
+        $username = 'root';
+        $password = 'password';
 
         /*
         $pdo = new PDO("mysql:host=$host;dbname=$database", $username, $password);
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt = $connection->prepare("INSERT INTO users2 (username, password, pokemons) VALUES (?, ?, ?)");
         $pokemonName = implode("", $selected_pokemon);
-        $stmt->bind_param("sss", $name, $password, $pokemonName);
+        $stmt->bind_param("sss", $name, $passworduploaded, $pokemonName);
         $stmt->execute();
 
         $stmt->close();
