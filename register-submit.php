@@ -40,6 +40,7 @@ $conn = new mysqli($host, $user, $pass, $dbname);
 
     if($result) {
         echo "New record created successfully";
+        echo "<a href='login.html'>Login here</a>";
     }
     else {
         echo "Error: " . $sql . "<br>" . $conn->error;

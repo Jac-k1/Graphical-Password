@@ -6,6 +6,6 @@
     <title>Ya made it</title>
 </head>
 <body>
-    <h1>Congrats you made it in</h1>
+    <h1>Congrats you made it in, <?php $name?>!</h1>
 </body>
 </html>
