@@ -8,9 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if selected_pokemon field is present in the form data
     if (isset($_POST['selected_pokemon'])) {
         // Retrieve the selected Pokémon from the form data
-        $pokemons = $_POST['selected_pokemon'];
-        $name = $_POST['username'];
-        $password = $_POST['password'];
+        $selected_pokemon = $_POST['selected_pokemon'] ?? [];
+        $name = $_POST['username'] ?? '';
+        $passworduploaded = $_POST['password'] ?? '';
 
 
         // Perform any validation or processing on the selected Pokémon data
@@ -18,29 +18,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Example: Store the selected Pokémon in a database
         $host = 'localhost';
-        $database = 'jpham24';
-        $username = 'jpham24';
-        $password = 'jpham24';
+        $database = 'test';
+        $username = 'root';
+        $password = 'password';
+
+        /*
+        $pdo = new PDO("mysql:host=$host;dbname=$database", $username, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $stmt = $pdo->prepare("INSERT INTO users2 (username, password, pokemons) VALUES (?, ?, ?)");
+        $pokemonName = implode("", $selected_pokemon);
+        $stmt->bind_param("sss", $name, $password, $pokemonName);
+        $stmt->execute();
+        */
+
+
 
         // Connect to the database
-        $connection = mysqli_connect($host, $username, $password, $database);
+        $connection = new mysqli($host, $username, $password, $database);
         if (!$connection) {
             die('Database connection failed: ' . mysqli_connect_error());
         }
 
-        // Escape and insert each selected Pokémon into the database
-        foreach ($selectedPokemon as $pokemon) {
-            $escapedPokemon = mysqli_real_escape_string($connection, $pokemon);
-            $query = "INSERT INTO users2 (username, password, pokemons) VALUES (?, ?, ?)";
-            mysqli_query($connection, $query);
-            $stmt = $conn->prepare($sql);
-            if(!$stmt) {
-                echo "Prepare failed: (". $conn->errno.") ".$conn->error."<br>";
-            }
-            $stmt->bind_param("sss", $name, $password, $pokemons);
-            $result = $stmt->execute();
-        }
+        $stmt = $connection->prepare("INSERT INTO users2 (username, password, pokemons) VALUES (?, ?, ?)");
+        $pokemonName = implode("", $selected_pokemon);
+        $stmt->bind_param("sss", $name, $passworduploaded, $pokemonName);
+        $stmt->execute();
 
+        $stmt->close();
         // Close the database connection
         mysqli_close($connection);
 
@@ -50,8 +55,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Handle the case where no Pokémon are selected
         echo "No Pokémon selected.";
     }
-} else {
-    // Handle the case where the form is not submitted
-    echo "Form not submitted.";
 }
 ?>
