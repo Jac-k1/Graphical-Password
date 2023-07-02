@@ -50,10 +50,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_close($connection);
 
         // Display a success message or redirect the user to another page
-        echo "Selected Pokémon have been stored in the database.";
+        echo "Account and Pokémon successfully created!";
+        echo "<br><br>";
+        echo "<a href='login.php'>Login here!</a>";
     } else {
         // Handle the case where no Pokémon are selected
-        echo "No Pokémon selected.";
+        echo "Missing username, password or Pokémon!";
     }
 }
 ?>

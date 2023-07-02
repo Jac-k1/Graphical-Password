@@ -19,9 +19,10 @@ if ($conn->connect_error) {
 
 
 
-$sql = "SELECT * FROM users2 where username = ? AND password = ? AND pokemons = ?";
+$sql = "SELECT username, password FROM users2 where pokemons = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("sss", $name, $password, $selected_pokemon);
+$pokemonName = implode("", $selected_pokemon);
+$stmt->bind_param("s", $pokemonName);
 $stmt->execute();
 $result = $stmt->get_result();
 
