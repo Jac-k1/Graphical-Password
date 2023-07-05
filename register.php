@@ -1,8 +1,8 @@
 <?php 
 $hostname = 'localhost';
-$username = 'sbuytendorp1';
-$password = 'sbuytendorp1';
-$database = 'sbuytendorp1';
+$username = 'root';
+$password = 'password';
+$database = 'test';
 
 // Create a new MySQLi instance
 $mysqli = new mysqli($hostname, $username, $password, $database);
