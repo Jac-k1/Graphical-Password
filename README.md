@@ -20,13 +20,13 @@ CREATE TABLE pokemon_sprites (
 
 --------------------------------------------------------
 
-CREATE users (
+CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL
 );
 
-CREATE pokemon_order (
+CREATE TABLE pokemon_order (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     pokemon_id INT,
