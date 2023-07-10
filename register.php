@@ -1,88 +1,117 @@
-<html>
+<?php
+$hostname = 'localhost';
+$username = 'root';
+$password = 'password';
+$database = 'test';
 
-<head>
-    <link rel='stylesheet' href='register.css'>
-    </link>
-</head>
+// Create a new MySQLi instance
+$mysqli = new mysqli($hostname, $username, $password, $database);
 
-<body>
-    <div class='main'>
-        <h1>Welcome to the Register page</h1>
+// Check if the connection was successful
+if ($mysqli->connect_errno) {
+    die("Failed to connect to MySQL: " . $mysqli->connect_error);
+}
 
-        <form action="./process.php" method="post">
-            <p>Username</p>
-            <input type='text' name="username"></input>
-            <br></br>
-            <p>Password</p>
-            <input type='password' name="password"></input>
-            <br></br>
-            <br></br>
+function fetchData($url)
+{
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $data = curl_exec($curl);
+    curl_close($curl);
+    return $data;
+}
+/*
+// Retrieve a list of 30 Pokémon from PokeAPI
+$pokemonListUrl = 'https://pokeapi.co/api/v2/pokemon?limit=30';
+$pokemonListData = fetchData($pokemonListUrl);
+$pokemonList = json_decode($pokemonListData)->results;
 
-            <?php
-            function fetchData($url)
-            {
-                $curl = curl_init($url);
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                $data = curl_exec($curl);
-                curl_close($curl);
-                return $data;
-            }
-            /*
-                        // Generate a random offset value between 0 and 1261
-                        $offset = rand(0, 1261);
+// Retrieve the details and default sprites for each Pokémon
+$pokemonDetails = [];
+foreach ($pokemonList as $pokemon) {
+    $pokemonUrl = $pokemon->url;
+    $pokemonData = fetchData($pokemonUrl);
+    $pokemonDetails[] = json_decode($pokemonData);
+}
+*/
 
-                        // Retrieve a list of 20 random Pokémon from PokeAPI
-                        $pokemonListUrl = 'https://pokeapi.co/api/v2/pokemon?limit=20&offset=' . $offset;
-                        $pokemonListData = fetchData($pokemonListUrl);
-                        $pokemonList = json_decode($pokemonListData)->results;
+$url = 'https://pokeapi.co/api/v2/pokemon?limit=30';
+$pokemon_data = json_decode(file_get_contents($url), true)['results'];
 
-                        // Retrieve the details and default sprites for each Pokémon
-                        $pokemonDetails = [];
-                        foreach ($pokemonList as $pokemon) {
-                            $pokemonUrl = $pokemon->url;
-                            $pokemonData = fetchData($pokemonUrl);
-                            $pokemonDetails[] = json_decode($pokemonData);
-                        }
+?>
 
-                        // Display the Pokémon sprites in boxes
-                        echo '<form method="post" action="process.php">';
-                        foreach ($pokemonDetails as $pokemon) {
-                            $pokemonSprite = $pokemon->sprites->front_default;
+<!-- Add a JavaScript function for form validation -->
+<script>
+    function validateForm() {
+        var username = document.forms["registrationForm"]["username"].value;
+        var password = document.forms["registrationForm"]["password"].value;
+        var selected_pokemon = document.querySelectorAll('input[name="selected_pokemon[]"]:checked');
 
-                            echo '<label>';
-                            echo '<input type="checkbox" name="selected_pokemon[]" value="' . $pokemonSprite . '">';
-                            echo '<img src="image-proxy.php?url=' . urlencode($pokemonSprite) . '" alt="Pokemon">';
-                            echo '</label>';
-                        }
-            */
+        if (username === "" || password === "") {
+            alert("Please fill in all fields.");
+            return false;
+        }
 
+        if (selected_pokemon.length === 0) {
+            alert("Please select at least one Pokémon.");
+            return false;
+        }
+    }
+</script>
 
-            // Generate a random offset value between 0 and 1261
-            
+<!-- Display the Pokémon sprites in boxes -->
+<form name="registrationForm" method="post" onsubmit="return validateForm();">
+    Username: <input type="text" name="username"><br>
+    Password: <input type="password" name="password"><br>
+    <?php 
+        foreach ($pokemon_data as $pokemon) {
+        $pokemon_detail = json_decode(file_get_contents($pokemon['url']), true);
+        $pokemon_name = $pokemon['name'];
+        $pokemon_sprite = $pokemon_detail['sprites']['front_default'];
+    ?>
+    <label>
+        <input type="checkbox" name="selected_pokemon[]" value="<?php echo $pokemon_detail['id']; ?>">
+        <img src="<?php echo $pokemon_sprite?>" alt="<?php echo $pokemon_name; ?>">
+    </label>
+    <?php } ?>
+    <br><br>
+    <input type="submit" value="Submit">
+</form>
 
-            // Retrieve a list of 20 random Pokémon from PokeAPI
-            $url = 'https://pokeapi.co/api/v2/pokemon?limit=20';
-            $pokemonData = json_decode(file_get_contents($url), true)['results'];
+<?php
+// Retrieve the submitted username and password
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
+    // Insert the username/password combination into the database
+    $query = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
+    if ($mysqli->query($query)) {
+        // Get the ID of the newly inserted user
+        $user_ID = $mysqli->insert_id;
 
-            foreach ($pokemonData as $pokemon) {
-                $pokemonDetails = json_decode(file_get_contents($pokemon['url']), true);
-                $pokemonName = $pokemon['name'];
-                $pokemonSprite = $pokemonDetails['sprites']['front_default'];
+        // Retrieve the selected Pokémon sprites
+        $selected_pokemon = $_POST['selected_pokemon'];
 
-            // Display the Pokémon sprites in boxes
-                echo '<form method="post" action="process.php">';
-                echo '<label>';
-                echo '<input type="checkbox" name="selected_pokemon[]" value="' . $pokemonName . '">';
-                echo '<img src="' . $pokemonSprite . '" alt="'. $pokemonName . '">';
-                echo '</label>';
-            }
-            echo '<br></br>';
-            echo '<input type="submit" value="Register">';
+        // Insert the selected Pokémon sprites into the database
+        $order = 1;
+        foreach ($selected_pokemon as $pokemon_ID) {
+            // Escape the sprite URL and user ID to prevent SQL injection
+            $escaped_pokemonID = $mysqli->real_escape_string($pokemon_ID);
 
-            ?>
-        </form>
-    </div>
-</body>
+            // Insert the sprite URL and user ID into the database
+            $query = "INSERT INTO pokemon_order (user_id, pokemon_id, order_number) VALUES ($user_ID, $escaped_pokemonID, $order)";
+            $mysqli->query($query);
 
-</html>
+            $order++;
+        }
+
+        // Redirect to login.php
+        header("Location: login.php");
+        exit();
+    } else {
+        // If the query fails, display an error message
+        echo "Registration failed: " . $mysqli->error;
+    }
+}
+?>
