@@ -1,10 +1,11 @@
 <?php
 session_start();
+//allows the user to re-select pokemon in case of reset. user will be sent here from reset_images.php
 
 $hostname = 'localhost';
-$username = 'root';
-$password = 'password';
-$database = 'test';
+$username = 'sbuytendorp1';
+$password = 'sbuytendorp1';
+$database = 'sbuytendorp1';
 
 // Create a new MySQLi instance
 $mysqli = new mysqli($hostname, $username, $password, $database);
@@ -26,36 +27,10 @@ function fetchData($url)
 // Retrieve the current batch number or initialize it as 0
 $current_batch = isset($_GET['batch']) ? $_GET['batch'] : 1;
 
-if ($current_batch > 3) {
+if ($current_batch > 4) {
     // Redirect to login.php if all batches are completed
     header("Location: login.php");
     exit();
-}
-
-if ($current_batch === 1 && $_SERVER["REQUEST_METHOD"] === "POST") {
-    // Retrieve the submitted username
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    if (empty($username)) {
-        echo "Please enter a username.";
-        exit();
-    }
-
-    // Store the username in a session variable
-    $_SESSION['username'] = $username;
-
-    // Insert the username into the database if it doesn't exist
-    $query = "SELECT user_id FROM users WHERE username = '$username'";
-    $result = $mysqli->query($query);
-
-    if ($result->num_rows === 0) {
-        $query = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
-        if (!$mysqli->query($query)) {
-            echo "Registration failed: " . $mysqli->error;
-            exit();
-        }
-    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -63,7 +38,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $selected_pokemon_id = $_POST['selected_pokemon'];
 
     if (empty($selected_pokemon_id)) {
-        echo "Please select a Pokémon.";
+        echo "Please select a Pokémon. Make sure to remember the order.";
+        exit();
+    }
+
+    // Check if the user is logged in
+    if (!isset($_SESSION['username'])) {
+        echo "User not logged in.";
         exit();
     }
 
@@ -83,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Redirect to the same page to load the next batch of Pokémon
         $next_batch = $current_batch + 1;
-        header("Location: register3.php?batch=$next_batch");
+        header("Location: select_pokemon.php?batch=$next_batch");
         exit();
     } else {
         echo "User not found.";
@@ -91,37 +72,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
-// Calculate the offset for retrieving the Pokémon data
-$offset = ($current_batch - 1) * 10;
-
 // Retrieve the Pokémon data for the current batch
-$url = "https://pokeapi.co/api/v2/pokemon?limit=10&offset=$offset";
+$url = "https://pokeapi.co/api/v2/pokemon?limit=50";
 $pokemon_data = json_decode(file_get_contents($url), true)['results'];
 ?>
 
 <!-- Add a JavaScript function for form validation -->
 <script>
-    function validateForm() {
-        var selectedPokemon = document.forms["registrationForm"]["selected_pokemon"].value;
+   function validateForm() {
+    var selectedPokemon = document.forms["registrationForm"]["selected_pokemon"].value;
 
-        if (selectedPokemon === "") {
-            alert("Please select a Pokémon.");
-            return false;
-        }
+    if (selectedPokemon === "") {
+        alert("Please select a Pokémon.");
+        return false;
     }
+}
 </script>
 
 <!-- Display the Pokémon sprites in boxes -->
 <form name="registrationForm" method="post" onsubmit="return validateForm();">
-    <?php if ($current_batch === 1) { ?>
-        <input type="text" name="username" placeholder="Enter your username" required>
-        <input type="password" name="password" placeholder="Enter your password" required>
-        <p>Please select 1 Pokemon: </p>
-    <?php } else { ?>
-        <p>Please select 1 Pokemon: </p>
-        <input type="hidden" name="username" value="<?php echo $_SESSION['username'] ?? ''; ?>">
-        <input type="hidden" name="password" value="<?php echo $_SESSION['password'] ?? ''; ?>">
-    <?php } ?>
+    <p>Please select 1 Pokémon: </p>
     <input type="hidden" name="current_batch" value="<?php echo $current_batch; ?>">
     <div id="pokemon_selection">
         <?php 
@@ -132,7 +102,7 @@ $pokemon_data = json_decode(file_get_contents($url), true)['results'];
         ?>
         <label>
             <input type="radio" name="selected_pokemon" value="<?php echo $pokemon_id; ?>">
-            <img src="<?php echo $pokemon_sprite; ?>" alt="<?php echo $pokemon_name; ?>">
+            <img src="image-proxy.php?url=<?php echo urlencode($pokemon_sprite); ?>" alt="<?php echo $pokemon_name; ?>">
         </label>
         <?php 
         }
