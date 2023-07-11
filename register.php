@@ -14,8 +14,7 @@ if ($mysqli->connect_errno) {
     die("Failed to connect to MySQL: " . $mysqli->connect_error);
 }
 
-function fetchData($url)
-{
+function fetchData($url) {
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     $data = curl_exec($curl);
