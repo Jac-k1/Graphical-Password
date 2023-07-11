@@ -85,12 +85,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $mysqli->query($query);
     
         $next_batch = $current_batch + 1;
-        header("Location: login2.php?batch=$next_batch");
+        if ($next_batch > 4) {
+            header("Location: authenticated_page.php");
+        } else {
+            header("Location: login.php?batch=$next_batch");
+        }
         exit();
         } else {
             echo '<script>alert("Something is wrong. Check username, password and/or pokemons");</script>';
             exit();
-        }
+        }        
     }
 }
 
@@ -108,7 +112,7 @@ $pokemon_data = json_decode(file_get_contents($url), true)['results'];
         function validateForm() {
             var username = document.forms["loginForm"]["username"].value;
             var password = document.forms["loginForm"]["password"].value;
-            var selectedPokemon = document.querySelectorAll('input[name="selected_pokemon[]"]:checked');
+            var selectedPokemon = document.forms["loginForm"]["selected_pokemon"].value;
 
         if (selectedPokemon === "") {
         alert("Please select a Pokémon.");
@@ -124,7 +128,7 @@ $pokemon_data = json_decode(file_get_contents($url), true)['results'];
 </head>
 <body>
     <h2>Login</h2>
-    <form name="loginForm" method="post" onsubmit="return validateForm()">
+    <form name="loginForm" method="post" onsubmit="return validateForm();">
     <?php if ($current_batch > 1) { ?>
         Username: <input type="text" name="username"><br>
         Password: <input type="password" name="password"><br>
