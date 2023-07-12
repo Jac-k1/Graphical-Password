@@ -1,5 +1,6 @@
 <?php
 session_start();
+//allows the user to re-select pokemon in case of reset. user will be sent here from reset_images.php
 
 $hostname = 'localhost';
 $username = 'sbuytendorp1';
@@ -14,7 +15,8 @@ if ($mysqli->connect_errno) {
     die("Failed to connect to MySQL: " . $mysqli->connect_error);
 }
 
-function fetchData($url) {
+function fetchData($url)
+{
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     $data = curl_exec($curl);
@@ -31,45 +33,18 @@ if ($current_batch > 4) {
     exit();
 }
 
-if ($current_batch === 1 && $_SERVER["REQUEST_METHOD"] === "POST") {
-    // Retrieve the submitted username
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    if (empty($username)) {
-        echo "Please enter a username.";
-        exit();
-    }
-
-    // Store the username in a session variable
-    $_SESSION['username'] = $username;
-
-    // Check if the username already exists in the database
-    $query = "SELECT user_id FROM users WHERE username = '$username'";
-    $result = $mysqli->query($query);
-
-    if ($result->num_rows === 0) {
-        $query = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
-        if (!$mysqli->query($query)) {
-            echo "Registration failed: " . $mysqli->error;
-            exit();
-        }
-    } elseif ($result->num_rows === 1) {
-        echo "<script>alert('Username already exists. Please choose a different username.');</script>";
-        echo "<script>window.location.href = 'register.php';</script>";
-        exit();
-    } else {
-        echo "Username already exists. Please chooose a new username.";
-        exit();
-    }
-}
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve the selected Pokemon ID
     $selected_pokemon_id = $_POST['selected_pokemon'];
 
     if (empty($selected_pokemon_id)) {
         echo "Please select a Pokémon. Make sure to remember the order.";
+        exit();
+    }
+
+    // Check if the user is logged in
+    if (!isset($_SESSION['username'])) {
+        echo "User not logged in.";
         exit();
     }
 
@@ -89,15 +64,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Redirect to the same page to load the next batch of Pokémon
         $next_batch = $current_batch + 1;
-        header("Location: register.php?batch=$next_batch");
+        header("Location: select_pokemon.php?batch=$next_batch");
         exit();
     } else {
         echo "User not found.";
         exit();
     }
 }
-
-
 
 // Retrieve the Pokémon data for the current batch
 $url = "https://pokeapi.co/api/v2/pokemon?limit=50";
@@ -108,16 +81,9 @@ $pokemon_data = json_decode(file_get_contents($url), true)['results'];
 <script>
    function validateForm() {
     var selectedPokemon = document.forms["registrationForm"]["selected_pokemon"].value;
-    var password = document.forms["registrationForm"]["password"].value;
-    var confirmPassword = document.forms["registrationForm"]["confirm_password"].value;
 
     if (selectedPokemon === "") {
         alert("Please select a Pokémon.");
-        return false;
-    }
-
-    if (password !== confirmPassword) {
-        alert("Password and confirm password do not match.");
         return false;
     }
 }
@@ -125,16 +91,7 @@ $pokemon_data = json_decode(file_get_contents($url), true)['results'];
 
 <!-- Display the Pokémon sprites in boxes -->
 <form name="registrationForm" method="post" onsubmit="return validateForm();">
-    <?php if ($current_batch === 1) { ?>
-        <input type="text" name="username" placeholder="Enter a username" required>
-        <input type="password" name="password" placeholder="Enter a password" required>
-        <input type="password" name="confirm_password" placeholder="Confirm password" required>
-        <p>Please select 1 Pokemon: </p>
-    <?php } else { ?>
-        <p>Please select 1 Pokemon: </p>
-        <input type="hidden" name="username" value="<?php echo $_SESSION['username'] ?? ''; ?>">
-        <input type="hidden" name="password" value="<?php echo $_SESSION['password'] ?? ''; ?>">
-    <?php } ?>
+    <p>Please select 1 Pokémon: </p>
     <input type="hidden" name="current_batch" value="<?php echo $current_batch; ?>">
     <div id="pokemon_selection">
         <?php 
