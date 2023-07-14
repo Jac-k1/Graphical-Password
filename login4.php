@@ -96,7 +96,7 @@ $pokemon_data = json_decode(file_get_contents($url), true)['results'];
 <body>
     <h2>Login</h2>
     <form name="loginForm" method="post" onsubmit="return validateForm()">
-        <?php if ($current_batch > 1) { ?>
+        <?php if ($current_batch === 1) { ?>
             Username: <input type="text" name="username"><br>
             Password: <input type="password" name="password"><br>
             <p>Please select 1 Pokémon: </p>
