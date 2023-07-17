@@ -54,8 +54,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 
 <!-- Login form -->
-<form method="post">
-    <input type="text" name="username" placeholder="Enter your username" required>
-    <input type="password" name="password" placeholder="Enter your password" required>
-    <input type="submit" value="Login">
-</form>
+
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+
+
+<body>
+    <div class="main">
+        <form method="post">
+            <h1>Login to <section> Poki-Lock</section></h1>
+            <p>Enter your Username:</p>
+            <input type="text" name="username" placeholder="Enter your username" required>
+            <p>Enter your Password:</p>
+            <input type="password" name="password" placeholder="Enter your password" required>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</body>
