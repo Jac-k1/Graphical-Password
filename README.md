@@ -21,5 +21,5 @@ FOREIGN KEY (user_id) REFERENCES users(user_id),
 UNIQUE KEY unique_order (user_id, order_number)
 );
 
-#for non-codd testing, replace line 149 of register.php, line 104 in reset_images.php and line 117 in reset_image.php with
+#for non-codd testing, replace line 149 of register.php, line 104 in reset_images.php, line 117 in reset_image.php, and line 59 of verify.php with
 <img src="<?php echo $pokemon_sprite?>" alt="<?php echo $pokemon_name; ?>">
