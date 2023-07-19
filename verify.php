@@ -27,12 +27,12 @@ $batches = $_SESSION['batches'];
 if (count($batches) === 1) {
     // Verify the selected Pokémon against the database
     $errors = verifyPokemonOrder($mysqli, $_SESSION['verification_results']);
-    if (count($errors) === 1) {
-        echo "Errors occurred during verification. Please try again.";
+    if (count($errors) === 0) {
+        $_SESSION['verification_complete'] = true;
+            header("Location: authenticated_page.php");
     } else {
-        echo "All batches have been successfully verified.";
-        header("Location: authenticated_page.php");
-
+        $_SESSION['verification_complete'] = false;
+            header("Location: authenticated_page.php");
     }
     unset($_SESSION['verification_results']);
     exit();
@@ -93,9 +93,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Verify the selected Pokémon against the database
         $errors = verifyPokemonOrder($mysqli, $_SESSION['verification_results']);
         if (count($errors) === 0) {
-            echo "All Pokemon have been successfully verified.";
+            $_SESSION['verification_complete'] = true;
+            header("Location: authenticated_page.php");
         } else {
-            echo "Errors occurred during verification. Please try again.";
+            $_SESSION['verification_complete'] = false;
+            header("Location: authenticated_page.php");
         }
         unset($_SESSION['verification_results']);
         exit();

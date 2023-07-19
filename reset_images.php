@@ -1,5 +1,4 @@
 <?php
-//script that resets the user's pokemon in the database
 session_start();
 
 $hostname = 'localhost';
@@ -16,32 +15,21 @@ if ($mysqli->connect_errno) {
 }
 
 // Check if the user is logged in
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['user_id'])) {
     echo "User not logged in.";
     exit();
 }
 
-// Get the user ID based on the stored username
-$username = $_SESSION['username'];
-$query = "SELECT user_id FROM users WHERE username = '$username'";
-$result = $mysqli->query($query);
+$user_ID = $_SESSION['user_id'];
 
-if ($result->num_rows === 1) {
-    $row = $result->fetch_assoc();
-    $user_ID = $row['user_id'];
-
-    // Delete the user's current Pokémon selection from the database
-    $query = "DELETE FROM pokemon_order WHERE user_id = $user_ID";
-    if (!$mysqli->query($query)) {
-        echo "Failed to reset Pokémon selection: " . $mysqli->error;
-        exit();
-    }
-
-    // Redirect to the select_pokemon.php page
-    header("Location: select_pokemon.php");
-    exit();
-} else {
-    echo "User not found.";
+// Delete the user's current Pokémon selection from the database
+$query = "DELETE FROM pokemon_order WHERE user_id = $user_ID";
+if (!$mysqli->query($query)) {
+    echo "Failed to reset Pokémon selection: " . $mysqli->error;
     exit();
 }
+
+// Redirect to the select_pokemon.php page
+header("Location: select_pokemon.php");
+exit();
 ?>

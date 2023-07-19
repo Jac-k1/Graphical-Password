@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ya made it</title>
+    <title>Home Page</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <h1>Congrats you made it in using pokemons for a password!</h1>
+    <div class="container">
+        <h1>Welcome to Poki-Lock!</h1>
+        <p>Please choose an option:</p>
+        <ul>
+            <li><a href="register.php">Register</a></li>
+            <li><a href="login.php">Login</a></li>
+        </ul>
+    </div>
 </body>
 </html>

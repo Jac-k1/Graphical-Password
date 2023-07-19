@@ -1,35 +1,34 @@
-
 @import url("https://fonts.cdnfonts.com/css/pokemon-solid");
 
 body {
-    background: url(./img/8613.png);
+  background: url(./img/8613.png);
 }
 
 .main {
-    background-image: url(./img/niK0rf7mdfgTLI4KDsZ6BT2MT9F4srP7qHsZpTtyHUk.webp);
-    background-size: 200px;
-    border: 5px solid #c7a008;
-    border-radius: 20px;
-    text-align: center;
-    padding: 5px;
+  background-image: url(./img/niK0rf7mdfgTLI4KDsZ6BT2MT9F4srP7qHsZpTtyHUk.webp);
+  background-size: 200px;
+  border: 5px solid #c7a008;
+  border-radius: 20px;
+  text-align: center;
+  padding: 5px;
 }
 
 h1 {
-    font-family: "Pokemon Solid", sans-serif;
+  font-family: "Pokemon Solid", sans-serif;
 }
 
 section {
-    color: #2a75bb;
-    text-shadow: -0 -0 5px #ffcb05;
-    font-size: larger;
+  color: #2a75bb;
+  text-shadow: -0 -0 5px #ffcb05;
+  font-size: larger;
 }
 
 a {
-    color: white;
-    padding-left: 10px;
-    padding-right: 10px;
-    border: 2px solid #c7a008;
-    background-color: #2a75bb;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 2px solid #c7a008;
+  background-color: #2a75bb;
 }
 
 /*
@@ -51,32 +50,31 @@ body {
 */
 
 h1 {
-    font-size: 48px;
-    color: #ff0000;
-    text-shadow: 2px 2px 2px #000000;
+  font-size: 48px;
+  color: #ff0000;
+  text-shadow: 2px 2px 2px #000000;
 }
 
 p {
-    font-size: 24px;
-    margin-bottom: 20px;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
 a {
-    display: inline-block;
-    font-size: 20px;
-    padding: 10px 20px;
-    margin-top: 20px;
-    background-color: #2a75bb;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
+  display: inline-block;
+  font-size: 20px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #2a75bb;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
 }
 
 a:hover {
-    background-color: #ff9900;
+  background-color: #ff9900;
 }
 
 a:visited {
-    color: #fff;
+  color: #fff;
 }
-

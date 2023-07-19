@@ -1,6 +1,5 @@
 <?php
 session_start();
-//allows the user to re-select pokemon in case of reset. user will be sent here from reset_images.php
 
 $hostname = 'localhost';
 $username = 'sbuytendorp1';
@@ -33,6 +32,12 @@ if ($current_batch > 4) {
     exit();
 }
 
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve the selected Pokemon ID
     $selected_pokemon_id = $_POST['selected_pokemon'];
@@ -42,32 +47,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 
-    // Check if the user is logged in
-    if (!isset($_SESSION['username'])) {
-        echo "User not logged in.";
-        exit();
-    }
+    $user_ID = $_SESSION['user_id'];
 
-    // Get the user ID based on the stored username
-    $username = $_SESSION['username'];
-    $query = "SELECT user_id FROM users WHERE username = '$username'";
-    $result = $mysqli->query($query);
-
-    if ($result->num_rows === 1) {
-        $row = $result->fetch_assoc();
-        $user_ID = $row['user_id'];
-
-        // Insert the selected Pokémon ID into the database
-        $escaped_pokemonID = $mysqli->real_escape_string($selected_pokemon_id);
-        $query = "INSERT INTO pokemon_order (user_id, pokemon_id, order_number) VALUES ($user_ID, $escaped_pokemonID, $current_batch)";
-        $mysqli->query($query);
-
-        // Redirect to the same page to load the next batch of Pokémon
-        $next_batch = $current_batch + 1;
-        header("Location: select_pokemon.php?batch=$next_batch");
-        exit();
+    // Insert the selected Pokémon ID into the database
+    $escaped_pokemonID = $mysqli->real_escape_string($selected_pokemon_id);
+    $query = "INSERT INTO pokemon_order (user_id, pokemon_id, order_number) VALUES ($user_ID, $escaped_pokemonID, $current_batch)";
+    if ($mysqli->query($query)) {
+        // Redirect to the next batch or logout if completed
+        if ($current_batch === 4) {
+            header("Location: select_pokemon.php?batch=5"); // Go to the final batch (5) which triggers the alert.
+            exit();
+        } else {
+            header("Location: select_pokemon.php?batch=" . ($current_batch + 1));
+            exit();
+        }
     } else {
-        echo "User not found.";
+        echo "Failed to insert Pokémon selection: " . $mysqli->error;
         exit();
     }
 }
