@@ -2,7 +2,7 @@
 
 body {
     background: url(./img/418495.jpg);
-    background-size: auto;
+    background-size: cover;
 }
 
 .main {
@@ -14,7 +14,7 @@ body {
     padding: 5px;
 }
 
-h1 {
+h1, p {
     font-family: "Pokemon Solid", sans-serif;
 }
 
@@ -22,4 +22,14 @@ section {
     color: #2a75bb;
     text-shadow: -0 -0 5px #ffcb05;
     font-size: larger;
+}
+
+input[type=submit] {
+    background-color: #2a75bb;
+    color: #ffcb05;
+    border: 2px solid #ffcb05;
+    font-family: "Pokemon Solid", sans-serif;
+    font-size: larger;
+    padding: 0px 16px;
+    cursor: pointer;
 }

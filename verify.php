@@ -32,7 +32,7 @@ if (count($batches) === 1) {
     } else {
         echo "All batches have been successfully verified.";
         header("Location: authenticated_page.php");
-        
+
     }
     unset($_SESSION['verification_results']);
     exit();
@@ -45,23 +45,30 @@ $url = "https://pokeapi.co/api/v2/pokemon?limit=50";
 $pokemon_data = json_decode(file_get_contents($url), true)['results'];
 ?>
 
+<head>
+    <title>Pokémon verification</title>
+    <link rel="stylesheet" href="register.css">
+</head>
+
 <!-- Display the Pokémon sprites for verification -->
 <form method="post">
-    <p>Please select 1 Pokémon:</p>
-    <?php
-    foreach ($pokemon_data as $pokemon) {
-        $pokemon_id = extractPokemonIdFromUrl($pokemon['url']);
-        $pokemon_name = $pokemon['name'];
-        $pokemon_sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$pokemon_id.png";
-        ?>
-        <label>
-            <input type="radio" name="selected_pokemon" value="<?php echo $pokemon_id; ?>">
-            <img src="image-proxy.php?url=<?php echo urlencode($pokemon_sprite); ?>" alt="<?php echo $pokemon_name; ?>">
-        </label>
+    <div class="selection">
+        <p>Please select 1 Pokémon:</p>
         <?php
-    }
-    ?>
-    <br><br>
+        foreach ($pokemon_data as $pokemon) {
+            $pokemon_id = extractPokemonIdFromUrl($pokemon['url']);
+            $pokemon_name = $pokemon['name'];
+            $pokemon_sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$pokemon_id.png";
+            ?>
+            <label>
+                <input type="radio" name="selected_pokemon" value="<?php echo $pokemon_id; ?>">
+                <img src="image-proxy.php?url=<?php echo urlencode($pokemon_sprite); ?>" alt="<?php echo $pokemon_name; ?>">
+            </label>
+            <?php
+        }
+        ?>
+        <br><br>
+    </div>
     <input type="submit" value="Verify">
 </form>
 

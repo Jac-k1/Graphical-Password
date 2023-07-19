@@ -14,7 +14,8 @@ if ($mysqli->connect_errno) {
     die("Failed to connect to MySQL: " . $mysqli->connect_error);
 }
 
-function fetchData($url) {
+function fetchData($url)
+{
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     $data = curl_exec($curl);
@@ -104,56 +105,79 @@ $url = "https://pokeapi.co/api/v2/pokemon?limit=50";
 $pokemon_data = json_decode(file_get_contents($url), true)['results'];
 ?>
 
+
+<head>
+    <title>Pokémon Registration</title>
+    <link rel="stylesheet" href="register.css">
+</head>
+
 <!-- Add a JavaScript function for form validation -->
 <script>
-   function validateForm() {
-    var selectedPokemon = document.forms["registrationForm"]["selected_pokemon"].value;
-    var password = document.forms["registrationForm"]["password"].value;
-    var confirmPassword = document.forms["registrationForm"]["confirm_password"].value;
+    function validateForm() {
+        var selectedPokemon = document.forms["registrationForm"]["selected_pokemon"].value;
+        var password = document.forms["registrationForm"]["password"].value;
+        var confirmPassword = document.forms["registrationForm"]["confirm_password"].value;
 
-    if (selectedPokemon === "") {
-        alert("Please select a Pokémon.");
-        return false;
-    }
+        if (selectedPokemon === "") {
+            alert("Please select a Pokémon.");
+            return false;
+        }
 
-    if (password !== confirmPassword) {
-        alert("Password and confirm password do not match.");
-        return false;
+        if (password !== confirmPassword) {
+            alert("Password and confirm password do not match.");
+            return false;
+        }
     }
-}
 </script>
 
-<!-- Display the Pokémon sprites in boxes -->
-<form name="registrationForm" method="post" onsubmit="return validateForm();">
-    <?php if ($current_batch === 1) { ?>
-        <input type="text" name="username" placeholder="Enter a username" required>
-        <input type="password" name="password" placeholder="Enter a password" required>
-        <input type="password" name="confirm_password" placeholder="Confirm password" required>
-        <p>Please select 1 Pokemon: </p>
-    <?php } else { ?>
-        <p>Please select 1 Pokemon: </p>
-        <input type="hidden" name="username" value="<?php echo $_SESSION['username'] ?? ''; ?>">
-        <input type="hidden" name="password" value="<?php echo $_SESSION['password'] ?? ''; ?>">
-    <?php } ?>
-    <input type="hidden" name="current_batch" value="<?php echo $current_batch; ?>">
-    <div id="pokemon_selection">
-        <?php 
-        foreach ($pokemon_data as $pokemon) {
-            $pokemon_id = extractPokemonIdFromUrl($pokemon['url']);
-            $pokemon_name = $pokemon['name'];
-            $pokemon_sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$pokemon_id.png";
-        ?>
-        <label>
-            <input type="radio" name="selected_pokemon" value="<?php echo $pokemon_id; ?>">
-            <img src="image-proxy.php?url=<?php echo urlencode($pokemon_sprite); ?>" alt="<?php echo $pokemon_name; ?>">
-        </label>
-        <?php 
-        }
-        ?>
+<body>
+    <!-- Display the Pokémon sprites in boxes -->
+    <div class="main">
+        <form name="registrationForm" method="post" onsubmit="return validateForm();">
+            <?php if ($current_batch === 1) { ?>
+                <h1>Welcome to the <section>Pokémon registration page!</section>
+                </h1>
+                <p>Please enter a username: </p>
+                <input type="text" name="username" placeholder="Enter a username" required>
+                <br><br>
+                <p>Please enter a password: </p>
+                <input type="password" name="password" placeholder="Enter a password" required>
+                <br><br>
+                <p>Please confirm your password: </p>
+                <input type="password" name="confirm_password" placeholder="Confirm password" required>
+                <br><br>
+                    <p>Please select 1 Pokemon: </p>
+                    <div class="selection">
+                <?php } else { ?>
+                    <p>Please select 1 Pokemon: </p>
+                    <div class="selection">
+                        <input type="hidden" name="username" value="<?php echo $_SESSION['username'] ?? ''; ?>">
+                        <input type="hidden" name="password" value="<?php echo $_SESSION['password'] ?? ''; ?>">
+                    <?php } ?>
+                    <input type="hidden" name="current_batch" value="<?php echo $current_batch; ?>">
+                    <div id="pokemon_selection">
+                        <?php
+                        foreach ($pokemon_data as $pokemon) {
+                            $pokemon_id = extractPokemonIdFromUrl($pokemon['url']);
+                            $pokemon_name = $pokemon['name'];
+                            $pokemon_sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$pokemon_id.png";
+                            ?>
+                            <label>
+                                <input type="radio" name="selected_pokemon" value="<?php echo $pokemon_id; ?>">
+                                <img src="image-proxy.php?url=<?php echo urlencode($pokemon_sprite); ?>"
+                                    alt="<?php echo $pokemon_name; ?>">
+                            </label>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                    <br><br>
+                    <input type="submit" value="Submit">
+                </div>
+            </div>
     </div>
-    <br><br>
-    <input type="submit" value="Submit">
-</form>
+    </form>
+</body>
 
 <?php
 function extractPokemonIdFromUrl($url)

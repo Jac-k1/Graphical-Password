@@ -1,10 +1,13 @@
 <?php
 session_start();
 
+
 $hostname = 'localhost';
 $username = 'sbuytendorp1';
 $password = 'sbuytendorp1';
 $database = 'sbuytendorp1';
+
+
 
 // Create a new MySQLi instance
 $mysqli = new mysqli($hostname, $username, $password, $database);
@@ -69,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <input type="text" name="username" placeholder="Enter your username" required>
             <p>Enter your Password:</p>
             <input type="password" name="password" placeholder="Enter your password" required>
+            <br><br>
             <input type="submit" value="Login">
         </form>
     </div>
