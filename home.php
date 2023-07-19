@@ -2,16 +2,16 @@
 <html>
 <head>
     <title>Home Page</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="home.css">
+    <title>Poki-Lock</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to Poki-Lock!</h1>
+    <div class="main">
+        <h1>Welcome to <section>Poki-Lock!</section></h1>
         <p>Please choose an option:</p>
-        <ul>
-            <li><a href="register.php">Register</a></li>
-            <li><a href="login.php">Login</a></li>
-        </ul>
+        <a href="register.php">Register</a>
+        <br><br>
+        <a href="login.php">Login</a>
     </div>
 </body>
 </html>

@@ -34,7 +34,7 @@ input[type=submit] {
 
 .main {
   background-image: url(./img/niK0rf7mdfgTLI4KDsZ6BT2MT9F4srP7qHsZpTtyHUk.webp);
-  background-size: 200px;
+  background-size: contain;
   border: 5px solid #c7a008;
   border-radius: 20px;
   text-align: center;

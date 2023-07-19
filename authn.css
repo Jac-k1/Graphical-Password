@@ -1,8 +1,9 @@
 @import url("https://fonts.cdnfonts.com/css/pokemon-solid");
 
 body {
-    background: url(./img/418495.jpg);
+    background: url(./img/sylveon-cherry-blossom-pokemon-thumb.jpg);
     background-size: cover;
+
 }
 
 .main {
@@ -14,9 +15,11 @@ body {
     padding: 5px;
 }
 
-h1, p {
-    font-family: "Pokemon Solid", sans-serif;
+p {
+    font-size: 24px;
+    margin-bottom: 20px;
 }
+
 
 section {
     color: #2a75bb;
@@ -24,12 +27,7 @@ section {
     font-size: larger;
 }
 
-input[type=submit] {
-    background-color: #2a75bb;
-    color: #ffcb05;
-    border: 2px solid #ffcb05;
+
+h2 {
     font-family: "Pokemon Solid", sans-serif;
-    font-size: larger;
-    padding: 0px 16px;
-    cursor: pointer;
 }
