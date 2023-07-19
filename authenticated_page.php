@@ -23,7 +23,7 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['verification_complete']) |
         }
 
         header {
-            background-color: #333;
+            background-color: #2a75bb;
             color: #fff;
             padding: 10px;
         }
